@@ -22,13 +22,14 @@ where date(p.payment_date) = '2005-07-30' and p.payment_date = r.rental_date and
 
 Оконнная функция содержит столбец f.title из таблицы которая присоединена без условий, что не правильно и не дает результата в выводе кроме увеличения времени обработки такого запроса
 Если ограничится той информацией которую выводят в selecte то таблицу film и inventory необходимо исключить, получится следущий запрос, который вернет тоже количество строк что и первоначальный запрос, но за более короткое время 42ms против 52000ms в первоначальном запросе
+Также можно исключить использование distinct при использовании group by
 Добавим индекс по столбцу payment_date таблицы payment
 ```sql
 CREATE index payment_date on payment(payment_date);
 ```
 и выполним оптимизированный запрос
 ```sql
-select distinct concat(c.last_name, ' ', c.first_name), sum(p.amount)
+select concat(c.last_name, ' ', c.first_name), sum(p.amount)
 from payment p
 inner join rental r on r.rental_date = p.payment_date
 inner join customer c on c.customer_id = r.customer_id 
