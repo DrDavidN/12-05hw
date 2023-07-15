@@ -5,11 +5,8 @@
 Напишите запрос к учебной базе данных, который вернёт процентное отношение общего размера всех индексов к общему размеру всех таблиц.
 
 ```sql
-select ROUND(t.sil*100/t.sdl) 'size index in %'
-from	(	select	SUM(data_length) sdl,
-					SUM(index_length) sil
-  			from	INFORMATION_SCHEMA.TABLES
-  		) t;
+select	ROUND(SUM(index_length)*100/SUM(data_length)) 'size index in %'
+from	INFORMATION_SCHEMA.TABLES
 ```
 
 ### Задание 2
